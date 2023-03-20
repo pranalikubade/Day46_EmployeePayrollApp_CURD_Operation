@@ -12,7 +12,7 @@
     <script src="../JS/Utility.js"></script>
 </head>
 <body>
-
+<!-- UC 1 -->
     <header class="header-content header">
     <div class="logo-content">
         <img src="../Assests/logo.png" alt="">
@@ -23,15 +23,15 @@
     </div>
 </header>
 <div id="formId" class="form content">
-<form class="form" action="#" onreset="resetForm()" onsubmit="save();">
-
+<form class="form" action="#" oncancel="cancelForm()" onreset="resetForm()" onsubmit="save(event);">
+<!-- UC 2 -->
 <div class="form-head"> Employee Payroll form</div>
     <div class="row-content">
         <label class="label text" for="name">Name:</label>
         <input class="input" type="text" id="name" name="name" placeholder="Your name.." required>
         <error-output class="text-error" for="text"></error-output>
     </div>
-
+<!-- UC 3 -->
 <div class="row-content">
     <label for="profile" class="label text">Profile Image</label>
     <div class="profile-radio-content">
@@ -57,7 +57,7 @@
         </label>
     </div>
 </div>
-
+<!-- UC 4 -->
 <div class="row-content">
     <label for="gender" class="label text">Gender</label>
     <div>
@@ -89,9 +89,10 @@
         <output class="salary-output text" for="salary">400000</output>
 </div>
 
+<!-- UC 5 -->
 <div class="row-content">
     <label for="startDate" class="label text">Start Date</label>
-    <div>
+    <div id="date">
         <select id="day" name="Day">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -150,8 +151,9 @@
             <option value="2016">2016</option>
         </select>
     </div>
+    <error-output class="date-error" for="startDate"></error-output>
 </div>
-
+<!-- UC 6 -->
 <div class="row-content">
     <label for="notes" class="label text">Notes</label>
     <textarea class="input" name="Notes" id="notes" style="height: 100px;"></textarea>

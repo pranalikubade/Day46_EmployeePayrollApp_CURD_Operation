@@ -15,7 +15,7 @@ class EmployeePayrollData{
         let nameRegex = RegExp('^[A-Z]{1}[a-zA-Z]{2,}$');
         if(nameRegex.test(name))
         this._name = name;
-        else throw 'name is incorrect'
+        else throw 'Name is incorrect'
     }
 
     get profilePic() {
@@ -57,6 +57,12 @@ class EmployeePayrollData{
         return this._startDate
     }
     set startDate(startDate) {
+        let now = new Date();
+        if (startDate > now) throw "Invalid Date(Future Date)";
+        let difference = Math.abs(now.getTime() - startDate.getTime());
+        if (difference / (1000 * 60 * 60 * 24) > 30) {
+            throw "Start Date should not be beyond 30 days.";
+        }
         this._startDate = startDate
     }
 
@@ -70,8 +76,15 @@ class EmployeePayrollData{
         const empDate = !this.startDate ? "undefined" :
             this.startDate.toLocaleDateString("en-US", options);
 
-        return "id =" + this.id + ",name = " + this.name +
-            " ,gender = " + this.gender + " ,profilePic = " + this.profilePic + ",salary = " + this.salary +
-            " ,department = " + this.department + " ,startDate = " + empDate + " ,notes = " + this.note;
+        return (
+            "[id =" + this.id +
+            ",name = " + this.name +
+            " ,gender = " + this.gender +
+            " ,profilePic = " + this.profilePic +
+            ",salary = " + this.salary +
+            " ,department = " + this.department +
+            " ,startDate = " + startDate + 
+            " ,notes = " + this.note+"]" +"\n"
+        );
     }
 }
