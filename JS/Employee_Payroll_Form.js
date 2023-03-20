@@ -1,5 +1,6 @@
-//UC 2
-//validation for Name
+let isUpdate = false;
+let employeePayrollObject = {};
+
 window.addEventListener('DOMContentLoaded', (event) => {
     const name = document.querySelector('#name');
     const textError = document.querySelector('.text-error');
@@ -17,29 +18,27 @@ window.addEventListener('DOMContentLoaded', (event) => {
     });
 
 
-const salary = document.querySelector('#salary');
-const output = document.querySelector('.salary-output');
-output.textContent = salary.value;
-salary.addEventListener('input',function(){
-output.textContent = salary.value;
-});
+    const salary = document.querySelector('#salary');
+    const output = document.querySelector('.salary-output');
+    output.textContent = salary.value;
+    salary.addEventListener('input',function(){
+        output.textContent = salary.value;
+    });
+
+    checkForUpdate();
 
 });
 
-//UC 3
-//Main method that invoked by submit button
+
 const save= ()=>{
     try {
         let employeePayrollData = createEmployeePayroll();
-        //alert(employeePayrollData.toString());
-        //UC 4
+        alert(employeePayrollData.toString());
         createAndUpdateStorage(employeePayrollData);
     } catch (e) {
         return;
     }
 }
-//UC 4
- // Method for storing employee payroll data to local storage 
  
 function createAndUpdateStorage(employeePayrollData){
     let employeePayrollList = JSON.parse(localStorage.getItem("EmployeePayrollList"));
@@ -53,9 +52,6 @@ function createAndUpdateStorage(employeePayrollData){
     localStorage.setItem("EmployeePayrollList", JSON.stringify(employeePayrollList))
 }
 
-//UC 3
-// @returns Method for creating employee payroll data object.
- 
 const createEmployeePayroll = () => {
     let employeePayrollData = new EmployeePayrollData();
     try {
@@ -94,8 +90,32 @@ const getInputValueByValue = (id) => {
     return value;
 }
 
-//UC 5
-// Method for reseting the form values
+const setForm = () => {
+    setValue("#name", employeePayrollObject._name);
+    setSelectedValues("[name=profile]", employeePayrollObject._profile);
+    setSelectedValues("[name=gender]", employeePayrollObject._gender);
+    setSelectedValues("[name=department]", employeePayrollObject._department);
+    setValue("#salary", ".salary-output", employeePayrollObject._salary);
+    setValue("#notes", employeePayrollObject._note);
+    let date = stringifyDate(employeePayrollObject._startDate).split(" ");
+    setValue("#day", date[0]);
+    setValue("#month", date[1]);
+    setValue("#year", date[2]);
+}
+
+const setSelectedValues = (propertyValue, value) => {
+    let allItems = document.querySelectorAll(propertyValue);
+    allItems.forEach(item => {
+        if (Array.isArray(value)) {
+            if (value.includes(item.value)) {
+                item.checked = true;
+            }
+        } else if (item.value == value) {
+            item.checked = true;
+        }
+    });
+}
+
 const resetForm = () => {
     setValues('#name', '');
     unsetSelectedValues('[name=profile]');
@@ -103,14 +123,14 @@ const resetForm = () => {
     unsetSelectedValues('[name=department]');
     setValues('#salary', '');
     setValues('#notes', '');
-    setValues('#day', '1');
-    setValues('#month', 'January');
-    setValues('#year', '2023');
+    setValues('#day', '0');
+    setValues('#month', '0');
+    setValues('#year', '0');
 }
 
 /*
  * Helper method for reset form
- * @param {*} propertyValue 
+    propertyValue 
  */
 const unsetSelectedValues = (propertyValue) => {
     let allItems = document.querySelectorAll(propertyValue);
@@ -119,22 +139,27 @@ const unsetSelectedValues = (propertyValue) => {
     });
 }
 
-/*
- * Helper method for reset form
- * @param {*} id 
- * @param {*} value 
- */
-const setValues = (id, value) => {
+// Helper method for reset form
+const setTextValue = (id, value) => {
+    const element = document.querySelector(id);
+    element.textContent = value;
+}
+
+ //Helper method for reset form
+ const setValue = (id, value) => {
     const element = document.querySelector(id);
     element.value = value;
 }
 
-/*
- * Helper method for reset form
- * @param {*} id 
- * @param {*} value 
- */
-const setTextValues = (id, value) => {
+const setSelectedIndex = (id, index) => {
     const element = document.querySelector(id);
-    element.textContent = value;
-}
+    element.selectedIndex = index;
+};
+
+const checkForUpdate = () => {
+    const employeePayrollJson = localStorage.getItem("editEmp");
+    isUpdate = employeePayrollJson ? true : false;
+    if (!isUpdate) return;
+    employeePayrollObject = JSON.parse(employeePayrollJson);
+    setForm();
+};
