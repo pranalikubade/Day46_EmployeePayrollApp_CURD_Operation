@@ -4,6 +4,7 @@ let empPayrollList;
 window.addEventListener("DOMContentLoaded", (event) => {
     empPayrollList=getEmployeePayrollDataFromStorage();
     createInnerHtml();
+    localStorage.removeItem('editEmp');
 });
 
 const getEmployeePayrollDataFromStorage = () =>{
@@ -57,4 +58,10 @@ const remove = (node) => {
     createInnerHtml();
 };
 
-
+//UC 2
+const update = (node) => {
+    let employeePayrollData = employeePayrollList.find(empData => empData._id == node.id);
+    if (!employeePayrollData) return;
+    localStorage.setItem("editEmp", JSON.stringify(employeePayrollData));
+    window.location.replace(site_properties.add_emp_payroll_page);
+}
